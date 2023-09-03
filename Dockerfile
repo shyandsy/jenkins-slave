@@ -1,8 +1,8 @@
-FROM docker-hub-remote.arf.tesla.cn/jenkins/agent:4.9-1-jdk11
+FROM jenkins/agent:4.9-1-jdk11
 
 USER root
-RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
-RUN sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
+#RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
+#RUN sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
     curl \
     openssh-client \
@@ -52,14 +52,15 @@ RUN chmod +x /usr/local/bin/jenkins-agent &&\
     ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave
 
 # Fuze CLI
-RUN curl https://artifactory.teslamotors.com/artifactory/list/pe-fuze-generic-local/latest/fuze_linux_amd64 -o /usr/local/bin/fuze && chmod 755 /usr/local/bin/fuze
+#RUN curl https://artifactory.teslamotors.com/artifactory/list/pe-fuze-generic-local/latest/fuze_linux_amd64 -o /usr/local/bin/fuze && chmod 755 /usr/local/bin/fuze
 
 # Helm Diff
+RUN curl https://github.com/databus23/helm-diff/releases/download/v3.8.1/helm-diff-linux-amd64.tgz
 RUN mkdir -p /root/.local/share/helm/plugins
 ADD ./helm-diff-linux-amd64.tgz /root/.local/share/helm/plugins/
 
 # JASC CLI
-RUN curl https://devops.tesla.cn/jascli/downloads/jasc-amd64-linux -o /usr/local/bin/jasc && chmod 755 /usr/local/bin/jasc
+#RUN curl https://devops.tesla.cn/jascli/downloads/jasc-amd64-linux -o /usr/local/bin/jasc && chmod 755 /usr/local/bin/jasc
 
 RUN mkdir /app
 WORKDIR /app
